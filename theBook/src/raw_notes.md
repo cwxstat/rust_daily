@@ -18,9 +18,9 @@ fn add(a:&mut i32, b: i32) -> i32 {
 
 fn main() {
     let mut x = 5;
-    println!("{}\n",add(&mut x, 2));
+    println!("{}\n", add(&mut x, 2));
     let mut y = add(&mut x, 20);
-    println!("{}\n",add(&mut y, 2));    
+    println!("{}\n", add(&mut y, 2));    
 }  
    ```
 
