@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="raw_notes.html"><strong aria-hidden="true">4.</strong> Raw Notes</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -181,6 +181,35 @@ fn main() {
     test!(1i32 + 1 == 2i32; and 2i32 * 2 == 4i32);
     test!(true; or false);
 }</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-2"><a class="header" href="#chapter-2">Chapter 2</a></h1>
+<p>This is an example of chapter 2.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-3"><a class="header" href="#chapter-3">Chapter 3</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="raw-notes"><a class="header" href="#raw-notes">Raw Notes</a></h1>
+<p>Daily progress notes, in no particular order.</p>
+<h2 id="2023-03-04"><a class="header" href="#2023-03-04">2023-03-04</a></h2>
+<p>Write a Rust program each day, for 100 days.</p>
+<pre><pre class="playground"><code class="language-rust editable">
+fn add(a:&amp;mut i32, b: i32) -&gt; i32 {
+    *a += b;
+    *a
+}
+
+fn main() {
+    let mut x = 5;
+    println!(&quot;{}\n&quot;,add(&amp;mut x, 2));
+    let mut y = add(&amp;mut x, 20);
+    println!(&quot;{}\n&quot;,add(&amp;mut y, 2));    
+}  </code></pre></pre>
+<p>It's also possible to add Go code. But, this
+code won't execute.</p>
+<pre><code class="language-go editable">package main
+
+import &quot;fmt&quot;
+
+func main() {
+    fmt.Println(&quot;Hello, playground&quot;)
+}
+</code></pre>
 
                     </main>
 
