@@ -7,11 +7,20 @@ interactive code snippets.
 
 Everything here is created in the folder `/theBook`
 
-### Create a new book
+### Building the book
 Just run the following command:
+
 ```bash
 ./build.sh
 ```
+
+### To Work on it Interactive
+
+```bash
+mdbook watch -o
+```
+
+Here's what's happening:
 
 ```bash
 mdbook build

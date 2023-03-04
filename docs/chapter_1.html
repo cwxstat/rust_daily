@@ -147,10 +147,14 @@
 <p>It's very simple to create a book with rust, with
 interactive code snippets.</p>
 <p>Everything here is created in the folder <code>/theBook</code></p>
-<h3 id="create-a-new-book"><a class="header" href="#create-a-new-book">Create a new book</a></h3>
+<h3 id="building-the-book"><a class="header" href="#building-the-book">Building the book</a></h3>
 <p>Just run the following command:</p>
 <pre><code class="language-bash">./build.sh
 </code></pre>
+<h3 id="to-work-on-it-interactive"><a class="header" href="#to-work-on-it-interactive">To Work on it Interactive</a></h3>
+<pre><code class="language-bash">mdbook watch -o
+</code></pre>
+<p>Here's what's happening:</p>
 <pre><code class="language-bash">mdbook build
 rm -rf ../docs
 mv book ../docs
