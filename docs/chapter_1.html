@@ -151,11 +151,35 @@ interactive code snippets.</p>
 rm -rf ../docs
 mv book ../docs
 </code></pre>
+<p>And, that's it!  Here is the first example of
+interactive code.</p>
 <pre><pre class="playground"><code class="language-rust editable">fn main() {
     // Some code
     println!(&quot;Hello, world!&quot;);
 }</code></pre></pre>
-<h2 id="subchapter"><a class="header" href="#subchapter">Subchapter</a></h2>
+<h3 id="a-more-advanced-example"><a class="header" href="#a-more-advanced-example">A more advanced example</a></h3>
+<pre><pre class="playground"><code class="language-rust editable">macro_rules! test {
+    // Arguments don't need to be separated by a comma.
+    // Any template can be used!
+    ($left:expr; and $right:expr) =&gt; {
+        println!(&quot;{:?} and {:?} is {:?}&quot;,
+                 stringify!($left),
+                 stringify!($right),
+                 $left &amp;&amp; $right)
+    };
+    // ^ each arm must end with a semicolon.
+    ($left:expr; or $right:expr) =&gt; {
+        println!(&quot;{:?} or {:?} is {:?}&quot;,
+                 stringify!($left),
+                 stringify!($right),
+                 $left || $right)
+    };
+}
+
+fn main() {
+    test!(1i32 + 1 == 2i32; and 2i32 * 2 == 4i32);
+    test!(true; or false);
+}</code></pre></pre>
 
                     </main>
 
