@@ -7,7 +7,11 @@ interactive code snippets.
 
 Everything here is created in the folder `/theBook`
 
-
+```bash
+mdbook build
+rm -rf ../docs
+mv book ../docs
+```
 
 ```rust,editable
 fn main() {

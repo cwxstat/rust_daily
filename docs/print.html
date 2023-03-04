@@ -148,6 +148,10 @@
 <p>It's very simple to create a book with rust, with
 interactive code snippets.</p>
 <p>Everything here is created in the folder <code>/theBook</code></p>
+<pre><code class="language-bash">mdbook build
+rm -rf ../docs
+mv book ../docs
+</code></pre>
 <pre><pre class="playground"><code class="language-rust editable">fn main() {
     // Some code
     println!(&quot;Hello, world!&quot;);
