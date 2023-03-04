@@ -7,6 +7,12 @@ interactive code snippets.
 
 Everything here is created in the folder `/theBook`
 
+### Create a new book
+Just run the following command:
+```bash
+./build.sh
+```
+
 ```bash
 mdbook build
 rm -rf ../docs
