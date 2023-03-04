@@ -3,6 +3,6 @@ authors = ["Mike Chirico (https://mchirico.github.io/)"]
 language = "en"
 multilingual = false
 src = "src"
-title = "Day 20"
+title = "My Book of Rust"
 [output.html.playground]
 editable = true

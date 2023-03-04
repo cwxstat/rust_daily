@@ -1,6 +1,13 @@
 # Chapter 1
 
-This is very cool, how you can crate a book with rust.
+This book was created with [mdBook](https://github.com/rust-lang/mdBook)
+
+It's very simple to create a book with rust, with
+interactive code snippets.
+
+Everything here is created in the folder `/theBook`
+
+
 
 ```rust,editable
 fn main() {
