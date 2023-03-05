@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="raw_notes.html"><strong aria-hidden="true">4.</strong> Raw Notes</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="raw_notes.html"><strong aria-hidden="true">4.</strong> Raw Notes</a></li><li class="chapter-item expanded "><a href="hashmap_1.html"><strong aria-hidden="true">5.</strong> Hashmap 1</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -218,6 +218,33 @@ func main() {
     fmt.Println(&quot;Hello, playground&quot;)
 }
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="hashmap-1"><a class="header" href="#hashmap-1">Hashmap 1</a></h1>
+<pre><pre class="playground"><code class="language-rust editable">
+use std::collections::HashMap;
+
+fn create_hashmap() -&gt; Box&lt;HashMap&lt;i32, String&gt;&gt; {
+    let mut map = HashMap::new();
+    map.insert(1, &quot;hello&quot;.to_string());
+    map.insert(2, &quot;world&quot;.to_string());
+
+    Box::new(map)
+}
+
+fn add_to_boxed_hashmap(box_map: &amp;mut Box&lt;HashMap&lt;i32, String&gt;&gt;, key: i32, value: String) {
+    for i in 0..10 {
+        box_map.insert(i, format!(&quot;hello {}&quot;, i));
+    }
+    box_map.insert(key, value);
+}
+
+fn main() {
+    let mut box_map = create_hashmap();
+    add_to_boxed_hashmap(&amp;mut box_map, 0, &quot;foo&quot;.to_string());
+    println!(&quot;{:?}&quot;, box_map);
+}
+
+
+</code></pre></pre>
 
                     </main>
 
