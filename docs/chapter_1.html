@@ -188,6 +188,26 @@ fn main() {
     test!(1i32 + 1 == 2i32; and 2i32 * 2 == 4i32);
     test!(true; or false);
 }</code></pre></pre>
+<h2 id="useful-basic-guide"><a class="header" href="#useful-basic-guide">Useful Basic Guide</a></h2>
+<p>Sample with tests.</p>
+<pre><pre class="playground"><code class="language-rust editable">fn add_integer(a: i32, b: i32) -&gt; i32 {
+    a + b
+}
+
+fn main() {
+    println!(&quot;{}&quot;, add_integer(1, 2));
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_add_integer() {
+        assert_eq!(super::add_integer(1, 2), 3);
+    }
+}
+
+</code></pre></pre>
 
                     </main>
 
