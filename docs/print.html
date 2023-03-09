@@ -209,6 +209,21 @@ mod tests {
 }
 
 </code></pre></pre>
+<h2 id="sample-with-fmt-skips"><a class="header" href="#sample-with-fmt-skips">Sample with fmt skips</a></h2>
+<pre><pre class="playground"><code class="language-rust editable">fn vec_vec() -&gt; Vec&lt;Vec&lt;i32&gt;&gt; {
+    #[rustfmt::skip]
+    let  vec = vec![
+        vec![1, 2, 3],
+        vec![4, 5, 6],
+        vec![7, 8, 9],
+    ];
+    vec
+}
+
+fn main() {
+    let vec = vec_vec();
+    println!(&quot;{:?}&quot;, vec);
+}</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-2"><a class="header" href="#chapter-2">Chapter 2</a></h1>
 <p>This is an example of chapter 2.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-3"><a class="header" href="#chapter-3">Chapter 3</a></h1>
