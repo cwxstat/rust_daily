@@ -223,6 +223,32 @@ fn main() {
     let vec = vec_vec();
     println!(&quot;{:?}&quot;, vec);
 }</code></pre></pre>
+<h1 id="lifetimes"><a class="header" href="#lifetimes">Lifetimes</a></h1>
+<p>This gets a little more complicated.  But, it's important.</p>
+<p>We have to make sure all the variables have the same lifetime.</p>
+<pre><pre class="playground"><code class="language-rust editable">fn greet&lt;'a&gt;(
+    names: &amp;mut Vec&lt;&amp;'a str&gt;,
+    target_name: &amp;'a str,
+    custom_message: &amp;'a str,
+    standard_message: &amp;'a str,
+) {
+    for name in names.iter_mut() {
+        *name = match name {
+            &amp;mut n if n == target_name =&gt; custom_message,
+            _ =&gt; standard_message,
+        }
+    }
+}
+
+fn main() {
+    let greeting = &quot;Well, hello Ferris!&quot;;
+    let mut names = vec![&quot;Bob&quot;, &quot;Frank&quot;, &quot;Ferris&quot;];
+    greet(&amp;mut names, &quot;Ferris&quot;, greeting, &quot;hi&quot;);
+    println!(&quot;{:?}&quot;, names);
+}
+
+// Ref:
+// https://web.mit.edu/rust-lang_v1.25/arch/amd64_ubuntu1404/share/doc/rust/html/book/first-edition/lifetimes.html</code></pre></pre>
 
                     </main>
 
