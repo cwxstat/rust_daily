@@ -9,7 +9,7 @@ fn read_file(path: &str) -> String {
 
     let mut contents = String::new();
     match file.read_to_string(&mut contents) {
-        Ok(_) => println!("{}", contents),
+        Ok(_) => {}
         Err(e) => panic!("Error reading file: {:?}", e),
     }
     contents
