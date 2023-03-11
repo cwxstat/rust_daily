@@ -177,6 +177,24 @@ fn main() {
 
     println!(&quot;{:?}&quot;, names);
 }</code></pre></pre>
+<p>And you can add a custom message.</p>
+<pre><pre class="playground"><code class="language-rust editable">fn modify_names(names: &amp;mut Vec&lt;&amp;str&gt;,custom_message: &amp;str) {
+    names.iter_mut().for_each(|i| {
+        let new_name = match *i {
+            &quot;Bob&quot; =&gt; format!(&quot;{}!, What's happening?&quot;, *i),
+            _ =&gt; format!(&quot;Hi {} {}&quot;, *i,custom_message),
+        };
+        *i = Box::leak(new_name.into_boxed_str());
+    });
+}
+
+fn main() {
+    let mut names = vec![&quot;Bob&quot;, &quot;Frank&quot;, &quot;Ferris&quot;];
+
+    modify_names(&amp;mut names,&quot;, custom message!&quot;);
+
+    println!(&quot;{:?}&quot;, names);
+}</code></pre></pre>
 
                     </main>
 
