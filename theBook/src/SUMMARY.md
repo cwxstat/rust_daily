@@ -5,5 +5,6 @@
 - [Chapter 3](./chapter_3.md)
 - [Raw Notes](./raw_notes.md)
 - [Hashmap 1](./hashmap_1.md)
+- [map,filter_map, collect](./functional.md)
 - [Videos](./videos_1.md)
 

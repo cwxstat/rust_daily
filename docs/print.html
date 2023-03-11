@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="raw_notes.html"><strong aria-hidden="true">4.</strong> Raw Notes</a></li><li class="chapter-item expanded "><a href="hashmap_1.html"><strong aria-hidden="true">5.</strong> Hashmap 1</a></li><li class="chapter-item expanded "><a href="videos_1.html"><strong aria-hidden="true">6.</strong> Videos</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="raw_notes.html"><strong aria-hidden="true">4.</strong> Raw Notes</a></li><li class="chapter-item expanded "><a href="hashmap_1.html"><strong aria-hidden="true">5.</strong> Hashmap 1</a></li><li class="chapter-item expanded "><a href="functional.html"><strong aria-hidden="true">6.</strong> map,filter_map, collect</a></li><li class="chapter-item expanded "><a href="videos_1.html"><strong aria-hidden="true">7.</strong> Videos</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -304,6 +304,23 @@ fn main() {
     println!(&quot;{:?}&quot;, box_map);
 }
 
+
+</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="mapfilter_map-collect"><a class="header" href="#mapfilter_map-collect">map,filter_map, collect</a></h1>
+<pre><pre class="playground"><code class="language-rust editable">fn main() {
+    let names = vec![&quot;Bob&quot;, &quot;Frank&quot;, &quot;Ferris&quot;];
+
+    let r = names
+        .iter()
+        .filter_map(|name| match name.starts_with(&quot;F&quot;) {
+            true =&gt; Some(name),
+            false =&gt; None,
+        })
+        .map(|name| name.to_uppercase())
+        .collect::&lt;Vec&lt;String&gt;&gt;();
+
+    println!(&quot;{:?}&quot;, r);
+}
 
 </code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="videos"><a class="header" href="#videos">Videos</a></h1>

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Chapter 3 - My Book of Rust</title>
+        <title>map,filter_map, collect - My Book of Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="chapter_3.html" class="active"><strong aria-hidden="true">3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="raw_notes.html"><strong aria-hidden="true">4.</strong> Raw Notes</a></li><li class="chapter-item expanded "><a href="hashmap_1.html"><strong aria-hidden="true">5.</strong> Hashmap 1</a></li><li class="chapter-item expanded "><a href="functional.html"><strong aria-hidden="true">6.</strong> map,filter_map, collect</a></li><li class="chapter-item expanded "><a href="videos_1.html"><strong aria-hidden="true">7.</strong> Videos</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="raw_notes.html"><strong aria-hidden="true">4.</strong> Raw Notes</a></li><li class="chapter-item expanded "><a href="hashmap_1.html"><strong aria-hidden="true">5.</strong> Hashmap 1</a></li><li class="chapter-item expanded "><a href="functional.html" class="active"><strong aria-hidden="true">6.</strong> map,filter_map, collect</a></li><li class="chapter-item expanded "><a href="videos_1.html"><strong aria-hidden="true">7.</strong> Videos</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -142,17 +142,33 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="chapter-3"><a class="header" href="#chapter-3">Chapter 3</a></h1>
+                        <h1 id="mapfilter_map-collect"><a class="header" href="#mapfilter_map-collect">map,filter_map, collect</a></h1>
+<pre><pre class="playground"><code class="language-rust editable">fn main() {
+    let names = vec![&quot;Bob&quot;, &quot;Frank&quot;, &quot;Ferris&quot;];
+
+    let r = names
+        .iter()
+        .filter_map(|name| match name.starts_with(&quot;F&quot;) {
+            true =&gt; Some(name),
+            false =&gt; None,
+        })
+        .map(|name| name.to_uppercase())
+        .collect::&lt;Vec&lt;String&gt;&gt;();
+
+    println!(&quot;{:?}&quot;, r);
+}
+
+</code></pre></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="chapter_2.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="hashmap_1.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="raw_notes.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="videos_1.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -162,11 +178,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="chapter_2.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="hashmap_1.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="raw_notes.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="videos_1.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
