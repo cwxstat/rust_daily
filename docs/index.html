@@ -249,6 +249,37 @@ fn main() {
 
 // Ref:
 // https://web.mit.edu/rust-lang_v1.25/arch/amd64_ubuntu1404/share/doc/rust/html/book/first-edition/lifetimes.html</code></pre></pre>
+<h1 id="working-with-files"><a class="header" href="#working-with-files">Working with Files</a></h1>
+<pre><pre class="playground"><code class="language-rust">use std::fs::File;
+use std::io::prelude::*;
+
+fn read_file(path: &amp;str) -&gt; Result&lt;String, std::io::Error&gt; {
+    let mut file = File::open(path)?;
+    let mut contents = String::new();
+    file.read_to_string(&amp;mut contents)?;
+    Ok(contents)
+}
+
+fn modify_names(names: &amp;mut Vec&lt;&amp;str&gt;, custom_message: &amp;str) {
+    names.iter_mut().for_each(|i| {
+        let new_name = match *i {
+            &quot;Bob&quot; =&gt; format!(&quot;{}!, What's happening?&quot;, *i),
+            _ =&gt; format!(&quot;Hi {} {}&quot;, *i, custom_message),
+        };
+        *i = Box::leak(new_name.into_boxed_str());
+    });
+}
+
+fn main() {
+    match read_file(&quot;./data/file.txt&quot;) {
+        Ok(contents) =&gt; {
+            let mut lines = contents.lines().collect();
+            modify_names(&amp;mut lines, &quot;, custom message!&quot;);
+            println!(&quot;{:?}&quot;, lines);
+        }
+        Err(e) =&gt; panic!(&quot;Error reading file: {:?}&quot;, e),
+    }
+}</code></pre></pre>
 
                     </main>
 
