@@ -160,9 +160,7 @@
 
 </code></pre></pre>
 <p>Here's a more complicated example.  This is a common pattern in Rust.</p>
-<pre><pre class="playground"><code class="language-rust editable">fn main() {
-    let mut names = vec![&quot;Bob&quot;, &quot;Frank&quot;, &quot;Ferris&quot;];
-
+<pre><pre class="playground"><code class="language-rust editable">fn modify_names(names: &amp;mut Vec&lt;&amp;str&gt;) {
     names.iter_mut().for_each(|i| {
         let new_name = match *i {
             &quot;Bob&quot; =&gt; format!(&quot;{}!, What's happening?&quot;, *i),
@@ -170,6 +168,12 @@
         };
         *i = Box::leak(new_name.into_boxed_str());
     });
+}
+
+fn main() {
+    let mut names = vec![&quot;Bob&quot;, &quot;Frank&quot;, &quot;Ferris&quot;];
+
+    modify_names(&amp;mut names);
 
     println!(&quot;{:?}&quot;, names);
 }</code></pre></pre>
