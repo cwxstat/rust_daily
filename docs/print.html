@@ -323,6 +323,20 @@ fn main() {
 }
 
 </code></pre></pre>
+<p>Here's a more complicated example.  This is a common pattern in Rust.</p>
+<pre><pre class="playground"><code class="language-rust editable">fn main() {
+    let mut names = vec![&quot;Bob&quot;, &quot;Frank&quot;, &quot;Ferris&quot;];
+
+    names.iter_mut().for_each(|i| {
+        let new_name = match *i {
+            &quot;Bob&quot; =&gt; format!(&quot;{}!, What's happening?&quot;, *i),
+            _ =&gt; format!(&quot;Hi {}&quot;, *i),
+        };
+        *i = Box::leak(new_name.into_boxed_str());
+    });
+
+    println!(&quot;{:?}&quot;, names);
+}</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="videos"><a class="header" href="#videos">Videos</a></h1>
 <p><a href="https://youtu.be/ugz1YgoZmzI?list=PLmsFUfdnGr3ynWvqEn4ffoMnT6WQ5E3-y&amp;t=2873">Island Problem</a></p>
 
