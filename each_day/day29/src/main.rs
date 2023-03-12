@@ -28,13 +28,25 @@ struct SQSMessage {
     group: String,
 }
 
-async fn find_last_queue(client: &Client) -> Result<String, Error> {
+async fn find_substr_in_queue(client: &Client, substr: &str) -> Result<String, Error> {
     let queues = client.list_queues().send().await?;
     let queue_urls = queues.queue_urls().unwrap_or_default();
-    Ok(queue_urls
-        .last()
-        .expect("No queues in this account and Region. Create a queue to proceed.")
-        .to_string())
+
+    let found: String = queue_urls
+        .iter()
+        .filter(|s| s.contains(substr))
+        .map(|s| s.to_string())
+        .collect();
+
+    if found.is_empty() {
+        println!(
+            "No queues found with '{}' in the name. Create a queue to proceed.",
+            substr
+        );
+        std::process::exit(1);
+    } else {
+        Ok(found)
+    }
 }
 
 // Send a message to a queue.
@@ -105,7 +117,7 @@ async fn main() -> Result<(), Error> {
 
     let shared_config = aws_config::from_env().region(region_provider).load().await;
     let client = Client::new(&shared_config);
-    let last_queue_url = find_last_queue(&client).await?;
+    let last_queue_url = find_substr_in_queue(&client, "spud.fifo").await?;
     let queue_url = queue.unwrap_or(last_queue_url);
 
     let message = SQSMessage {
