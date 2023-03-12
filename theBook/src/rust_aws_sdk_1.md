@@ -1,6 +1,6 @@
 # Rust AWS SDK 1
 
-See day29 for a complete example.
+See [day29](https://github.com/cwxstat/rust_daily/tree/main/each_day/day29) for a complete example.
 
 ```rust,editable
 
