@@ -6,5 +6,6 @@
 - [Raw Notes](./raw_notes.md)
 - [Hashmap 1](./hashmap_1.md)
 - [map,filter_map, collect](./functional.md)
+- [Rust AWS SDK 1](./rust_aws_sdk_1.md)
 - [Videos](./videos_1.md)
 
