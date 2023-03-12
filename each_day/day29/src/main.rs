@@ -1,7 +1,4 @@
-/*
- * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
- * SPDX-License-Identifier: Apache-2.0.
- */
+
 
 use aws_config::meta::region::RegionProviderChain;
 use aws_sdk_sqs::{Client, Error, Region, PKG_VERSION};
@@ -49,8 +46,7 @@ async fn find_substr_in_queue(client: &Client, substr: &str) -> Result<String, E
     }
 }
 
-// Send a message to a queue.
-// snippet-start:[sqs.rust.sqs-send]
+
 async fn send(client: &Client, queue_url: &String, message: &SQSMessage) -> Result<(), Error> {
     println!("Sending message to queue with URL: {}", queue_url);
 
