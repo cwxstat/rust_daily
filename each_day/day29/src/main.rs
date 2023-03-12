@@ -28,8 +28,7 @@ struct SQSMessage {
     group: String,
 }
 
-// snippet-start:[sqs.rust.sqs-list-first]
-async fn find_first_queue(client: &Client) -> Result<String, Error> {
+async fn find_last_queue(client: &Client) -> Result<String, Error> {
     let queues = client.list_queues().send().await?;
     let queue_urls = queues.queue_urls().unwrap_or_default();
     Ok(queue_urls
@@ -37,7 +36,6 @@ async fn find_first_queue(client: &Client) -> Result<String, Error> {
         .expect("No queues in this account and Region. Create a queue to proceed.")
         .to_string())
 }
-// snippet-end:[sqs.rust.sqs-list-first]
 
 // Send a message to a queue.
 // snippet-start:[sqs.rust.sqs-send]
@@ -58,7 +56,6 @@ async fn send(client: &Client, queue_url: &String, message: &SQSMessage) -> Resu
 
     Ok(())
 }
-// snippet-end:[sqs.rust.sqs-send]
 
 // Pump a queue for up to 10 outstanding messages.
 // snippet-start:[sqs.rust.sqs-receive]
@@ -108,8 +105,8 @@ async fn main() -> Result<(), Error> {
 
     let shared_config = aws_config::from_env().region(region_provider).load().await;
     let client = Client::new(&shared_config);
-    let first_queue_url = find_first_queue(&client).await?;
-    let queue_url = queue.unwrap_or(first_queue_url);
+    let last_queue_url = find_last_queue(&client).await?;
+    let queue_url = queue.unwrap_or(last_queue_url);
 
     let message = SQSMessage {
         body: "hello from my queue".to_owned(),
