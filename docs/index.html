@@ -280,6 +280,38 @@ fn main() {
         Err(e) =&gt; panic!(&quot;Error reading file: {:?}&quot;, e),
     }
 }</code></pre></pre>
+<h1 id="working-with-errors"><a class="header" href="#working-with-errors">Working with Errors</a></h1>
+<pre><pre class="playground"><code class="language-rust editable">use std::io::{Error, ErrorKind};
+
+fn find(substring: &amp;str) -&gt; Result&lt;String, Error&gt; {
+    let strings: Vec&lt;String&gt; = vec![
+        &quot;apple&quot;.to_string(),
+        &quot;banana&quot;.to_string(),
+        &quot;cherry&quot;.to_string(),
+    ];
+
+    if let Some(s) = strings.iter().find(|s| s.contains(substring)) {
+        println!(&quot;Found '{}' in '{}'&quot;, substring, s);
+        Ok(s.to_string())
+    } else {
+        Err(Error::new(
+            ErrorKind::NotFound,
+            format!(&quot;No match for '{}'&quot;, substring),
+        ))
+    }
+}
+
+fn main() {
+    let result = find(&quot;an&quot;);
+
+    if result.is_err() {
+        println!(&quot;Error: {:?}&quot;, result.err());
+    } else {
+        println!(&quot;Result: {:?}&quot;, result.unwrap());
+    }
+}
+
+</code></pre></pre>
 
                     </main>
 
