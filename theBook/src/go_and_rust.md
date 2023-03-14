@@ -14,6 +14,8 @@ fn main() {
 
 ## Maps
 
+### Go Sample
+
 ```go
 package main
 
@@ -30,7 +32,7 @@ func main() {
 
 ```
 
-## Rust
+### Rust Sample
 
 ```rust,editable
 use std::collections::HashMap;
@@ -43,6 +45,11 @@ fn main() {
     println!("{:?}", m);
 }
 ```
+
+## Append
+
+### Go Sample
+
 
 ```go
 package main
@@ -58,7 +65,7 @@ func main() {
 }
 
 ```
-
+### Rust Sample
 ```rust,editable
 fn main() {
     let mut s: Vec<String> = Vec::new();
@@ -70,7 +77,8 @@ fn main() {
 
 ```
 
-## Go
+## Structs and Recievers
+### Go Sample
 
 ```go
 package main
@@ -118,7 +126,8 @@ func main() {
 
 ```
 
-## Rust
+
+### Rust Sample
 
 ```rust,editable
 #[derive(Debug)]
