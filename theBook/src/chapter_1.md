@@ -285,5 +285,39 @@ fn main() {
 
 ```
 
+## There's more
 
+```rust,editable
+fn main() {
+    let strings = vec![
+        String::from("hello"),
+        String::from("world"),
+        String::from("bobcat"),
+        String::from("bob"),
+        String::from("alabama"),
+    ];
+
+    let mut filtered_strings: Vec<String> = strings
+        .iter()
+        .filter(|s| s.contains("bob"))
+        .inspect(|s| println!("Filtered string: {:?}", s))
+        .filter(|s| sporky(s))
+        .map(|s| s.clone())
+        .collect();
+
+    filtered_strings.sort();
+    println!("Filtered strings: {:?}", filtered_strings);
+}
+
+fn sporky(string: &str) -> bool {
+    if string.contains("cat") {
+        println!("{} is sporky", string);
+        true
+    } else {
+        println!("{} is not sporky", string);
+        false
+    }
+}
+
+```
 

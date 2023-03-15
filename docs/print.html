@@ -372,6 +372,38 @@ fn main() {
 }
 
 </code></pre></pre>
+<h2 id="theres-more"><a class="header" href="#theres-more">There's more</a></h2>
+<pre><pre class="playground"><code class="language-rust editable">fn main() {
+    let strings = vec![
+        String::from(&quot;hello&quot;),
+        String::from(&quot;world&quot;),
+        String::from(&quot;bobcat&quot;),
+        String::from(&quot;bob&quot;),
+        String::from(&quot;alabama&quot;),
+    ];
+
+    let mut filtered_strings: Vec&lt;String&gt; = strings
+        .iter()
+        .filter(|s| s.contains(&quot;bob&quot;))
+        .inspect(|s| println!(&quot;Filtered string: {:?}&quot;, s))
+        .filter(|s| sporky(s))
+        .map(|s| s.clone())
+        .collect();
+
+    filtered_strings.sort();
+    println!(&quot;Filtered strings: {:?}&quot;, filtered_strings);
+}
+
+fn sporky(string: &amp;str) -&gt; bool {
+    if string.contains(&quot;cat&quot;) {
+        println!(&quot;{} is sporky&quot;, string);
+        true
+    } else {
+        println!(&quot;{} is not sporky&quot;, string);
+        false
+    }
+}
+</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-2"><a class="header" href="#chapter-2">Chapter 2</a></h1>
 <p>This is an example of chapter 2.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-3"><a class="header" href="#chapter-3">Chapter 3</a></h1>
