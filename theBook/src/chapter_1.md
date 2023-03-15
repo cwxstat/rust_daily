@@ -267,5 +267,23 @@ fn main() {
 
 ```
 
+## Useful
+
+This can also be useful
+
+```rust,editable
+fn main() {
+    let numbers = vec![1, 2, 3, 4, 5];
+
+    if let Some(third_number) = numbers.iter().nth(2) {
+        println!("The third number is {}", third_number);
+    } else {
+        println!("There is no third number.");
+    }
+}
+
+
+```
+
 
 

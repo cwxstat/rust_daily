@@ -359,6 +359,19 @@ fn main() {
     println!(&quot;Filtered strings: {:?}&quot;, filtered_strings);
 }
 </code></pre></pre>
+<h2 id="useful"><a class="header" href="#useful">Useful</a></h2>
+<p>This can also be useful</p>
+<pre><pre class="playground"><code class="language-rust editable">fn main() {
+    let numbers = vec![1, 2, 3, 4, 5];
+
+    if let Some(third_number) = numbers.iter().nth(2) {
+        println!(&quot;The third number is {}&quot;, third_number);
+    } else {
+        println!(&quot;There is no third number.&quot;);
+    }
+}
+
+</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-2"><a class="header" href="#chapter-2">Chapter 2</a></h1>
 <p>This is an example of chapter 2.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-3"><a class="header" href="#chapter-3">Chapter 3</a></h1>
