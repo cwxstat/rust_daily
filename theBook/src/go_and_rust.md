@@ -182,7 +182,7 @@ fn main() {
 What about Go's defer?
 
 ```rust,editable
-n main() {
+fn main() {
     defer(|| {
         println!("This message always gets printed last!");
     });
