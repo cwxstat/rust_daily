@@ -404,6 +404,29 @@ fn sporky(string: &amp;str) -&gt; bool {
     }
 }
 </code></pre></pre>
+<h2 id="you-gotta-love-maps"><a class="header" href="#you-gotta-love-maps">You gotta love maps</a></h2>
+<pre><pre class="playground"><code class="language-rust editable">fn main() {
+    let strings = vec![
+        String::from(&quot;1 2 3 4&quot;),
+        String::from(&quot;hello world&quot;),
+        String::from(&quot;goodbye world&quot;),
+        String::from(&quot;hello bobcat&quot;),
+        String::from(&quot;goodbye bobcat&quot;),
+        String::from(&quot;hello alabama&quot;),
+        String::from(&quot;goodbye alabama&quot;),
+    ];
+
+    let filtered_strings: Vec&lt;String&gt; = strings
+        .iter()
+        .inspect(|s| println!(&quot;Before string: {:?}&quot;, s))
+        .flat_map(|s| s.split_whitespace())
+        .inspect(|s| println!(&quot;After string: {:?}&quot;, s))
+        .filter(|s| s.contains(&quot;bob&quot;))
+        .map(|s| s.to_owned())
+        .collect();
+
+    println!(&quot;Filtered strings: {:?}&quot;, filtered_strings);
+}</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-2"><a class="header" href="#chapter-2">Chapter 2</a></h1>
 <p>This is an example of chapter 2.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-3"><a class="header" href="#chapter-3">Chapter 3</a></h1>
