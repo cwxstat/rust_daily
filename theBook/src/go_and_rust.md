@@ -178,3 +178,34 @@ fn main() {
 
 
 ```
+
+What about Go's defer?
+
+```rust,editable
+n main() {
+    defer(|| {
+        println!("This message always gets printed last!");
+    });
+
+    panic!("Oops, something went wrong!");
+}
+
+fn defer<F: FnOnce() + 'static>(f: F) {
+    let deferrer = Defer { f: Some(f) };
+    std::mem::forget(deferrer);
+}
+
+struct Defer<F: FnOnce() + 'static> {
+    f: Option<F>,
+}
+
+impl<F: FnOnce() + 'static> Drop for Defer<F> {
+    fn drop(&mut self) {
+        if let Some(f) = self.f.take() {
+            let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(f));
+        }
+    }
+}
+
+
+```
