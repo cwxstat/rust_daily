@@ -212,5 +212,60 @@ fn main() {
 
 ```
 
+## Favorite 
+
+```rust,editable
+fn main() {
+    let strings = vec![
+        String::from("hello"),
+        String::from("world"),
+        String::from("bobcat"),
+        String::from("bob"),
+        String::from("alabama"),
+    ];
+
+    let mut filtered_strings: Vec<String> = strings
+        .iter()
+        .filter(|s| s.contains("bob"))
+        .inspect(|s| println!("Filtered string: {:?}", s))
+        .map(|s| s.clone())
+        .collect();
+
+    filtered_strings.sort();
+    println!("Filtered strings: {:?}", filtered_strings);
+}
+
+```
+
+
+## Here's another one
+
+```rust,editable
+fn main() {
+    let strings = vec![
+        String::from("hello"),
+        String::from("world"),
+        String::from("bobcat"),
+        String::from("bob"),
+        String::from("alabama"),
+    ];
+
+    let mut filtered_strings: Vec<String> = strings
+        .iter()
+        .filter_map(|s| {
+            if s.contains("bob") {
+                Some(s.clone())
+            } else {
+                None
+            }
+        })
+        .collect();
+
+    filtered_strings.sort();
+    println!("Filtered strings: {:?}", filtered_strings);
+}
+
+```
+
 
 
