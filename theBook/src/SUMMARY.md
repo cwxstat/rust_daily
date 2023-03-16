@@ -11,5 +11,6 @@
 - [map,filter_map, collect](./functional.md)
 - [Rust AWS SDK 1](./rust_aws_sdk_1.md)
 - [Repos to look at](./rust_repos.md)
+- [100+ Questions](./100_questions.md)
 - [Videos](./videos_1.md)
 
