@@ -7,7 +7,9 @@ use std::collections::HashMap;
 fn main() -> io::Result<()> {
     let home = env::var("HOME").expect("HOME environment variable not found");
     let downloads = Path::new(&home).join("Downloads");
-    let extensions = vec!["zip", "pdf", "txt", "png", "jpg"];
+    let extensions = vec!["zip", "pdf", "txt",
+                          "png", "jpg","gz","pkg","csv","json",
+                          "dmg","HEIC","xlsx","tgz","mov"];
 
     let mut file_count = 0;
     let mut bytes_written: HashMap<&str, u64> = HashMap::new();
@@ -17,7 +19,7 @@ fn main() -> io::Result<()> {
         let target_dir = downloads.join(extension);
         fs::create_dir_all(&target_dir)?;
         bytes_written.insert(extension, 0);
-        bytes_in_dir.insert(extension, 0);
+        bytes_in_dir.insert(extension, calculate_directory_size(&target_dir)?);
     }
 
     for entry in fs::read_dir(&downloads)? {
@@ -51,4 +53,20 @@ fn main() -> io::Result<()> {
     }
 
     Ok(())
+}
+
+fn calculate_directory_size(dir: &Path) -> io::Result<u64> {
+    let mut size = 0;
+
+    for entry in fs::read_dir(dir)? {
+        let entry: DirEntry = entry?;
+        let path = entry.path();
+        let metadata = fs::metadata(&path)?;
+
+        if metadata.is_file() {
+            size += metadata.len();
+        }
+    }
+
+    Ok(size)
 }
