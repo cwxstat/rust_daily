@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="bash_utils.html"><strong aria-hidden="true">4.</strong> Bash Utils</a></li><li class="chapter-item expanded "><a href="go_and_rust.html"><strong aria-hidden="true">5.</strong> Go and in Rust</a></li><li class="chapter-item expanded "><a href="raw_notes.html"><strong aria-hidden="true">6.</strong> Raw Notes</a></li><li class="chapter-item expanded "><a href="hashmap_1.html"><strong aria-hidden="true">7.</strong> Hashmap 1</a></li><li class="chapter-item expanded "><a href="functional.html"><strong aria-hidden="true">8.</strong> map,filter_map, collect</a></li><li class="chapter-item expanded "><a href="rust_aws_sdk_1.html"><strong aria-hidden="true">9.</strong> Rust AWS SDK 1</a></li><li class="chapter-item expanded "><a href="rust_repos.html"><strong aria-hidden="true">10.</strong> Repos to look at</a></li><li class="chapter-item expanded "><a href="videos_1.html"><strong aria-hidden="true">11.</strong> Videos</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="solid.html"><strong aria-hidden="true">4.</strong> SOLID Principles</a></li><li class="chapter-item expanded "><a href="bash_utils.html"><strong aria-hidden="true">5.</strong> Bash Utils</a></li><li class="chapter-item expanded "><a href="go_and_rust.html"><strong aria-hidden="true">6.</strong> Go and in Rust</a></li><li class="chapter-item expanded "><a href="raw_notes.html"><strong aria-hidden="true">7.</strong> Raw Notes</a></li><li class="chapter-item expanded "><a href="hashmap_1.html"><strong aria-hidden="true">8.</strong> Hashmap 1</a></li><li class="chapter-item expanded "><a href="functional.html"><strong aria-hidden="true">9.</strong> map,filter_map, collect</a></li><li class="chapter-item expanded "><a href="rust_aws_sdk_1.html"><strong aria-hidden="true">10.</strong> Rust AWS SDK 1</a></li><li class="chapter-item expanded "><a href="rust_repos.html"><strong aria-hidden="true">11.</strong> Repos to look at</a></li><li class="chapter-item expanded "><a href="videos_1.html"><strong aria-hidden="true">12.</strong> Videos</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -430,6 +430,64 @@ fn sporky(string: &amp;str) -&gt; bool {
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-2"><a class="header" href="#chapter-2">Chapter 2</a></h1>
 <p>This is an example of chapter 2.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chapter-3"><a class="header" href="#chapter-3">Chapter 3</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="solid-principles"><a class="header" href="#solid-principles">SOLID Principles</a></h1>
+<h2 id="dependency-inversion-principle"><a class="header" href="#dependency-inversion-principle">Dependency Inversion Principle</a></h2>
+<h3 id="high-level-modules-should-not-depend-on-low-level-modules-both-should-depend-on-abstractions"><a class="header" href="#high-level-modules-should-not-depend-on-low-level-modules-both-should-depend-on-abstractions">High-level modules should not depend on low-level modules. Both should depend on abstractions.</a></h3>
+<pre><pre class="playground"><code class="language-rust editable">// Define an abstraction (trait) for data storage
+pub trait DataStorage {
+    fn save_data(&amp;self, data: &amp;str) -&gt; Result&lt;(), String&gt;;
+}
+
+// Implement a low-level module for file storage
+pub struct FileStorage;
+
+impl DataStorage for FileStorage {
+    fn save_data(&amp;self, data: &amp;str) -&gt; Result&lt;(), String&gt; {
+        println!(&quot;Saving data to a file: {}&quot;, data);
+        // Implement file saving logic here
+        Ok(())
+    }
+}
+
+// Implement another low-level module for cloud storage
+pub struct CloudStorage;
+
+impl DataStorage for CloudStorage {
+    fn save_data(&amp;self, data: &amp;str) -&gt; Result&lt;(), String&gt; {
+        println!(&quot;Saving data to the cloud: {}&quot;, data);
+        // Implement cloud saving logic here
+        Ok(())
+    }
+}
+
+// High-level module that depends on the abstraction (trait) rather than concrete implementations
+pub struct DataManager&lt;T: DataStorage&gt; {
+    storage: T,
+}
+
+impl&lt;T: DataStorage&gt; DataManager&lt;T&gt; {
+    pub fn new(storage: T) -&gt; Self {
+        DataManager { storage }
+    }
+
+    pub fn save_data(&amp;self, data: &amp;str) -&gt; Result&lt;(), String&gt; {
+        self.storage.save_data(data)
+    }
+}
+
+fn main() {
+    // Use FileStorage with DataManager
+    let file_storage = FileStorage;
+    let data_manager_file = DataManager::new(file_storage);
+    data_manager_file.save_data(&quot;Some data for file storage&quot;).unwrap();
+
+    // Use CloudStorage with DataManager
+    let cloud_storage = CloudStorage;
+    let data_manager_cloud = DataManager::new(cloud_storage);
+    data_manager_cloud.save_data(&quot;Some data for cloud storage&quot;).unwrap();
+}
+
+</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="bash-utils"><a class="header" href="#bash-utils">Bash Utils</a></h1>
 <pre><pre class="playground"><code class="language-rust editable">use std::env;
 use std::fs;
