@@ -61,3 +61,84 @@ fn main() {
 
 
 ```
+
+## Interface Segregation Principle
+
+### Many client-specific interfaces are better than one general-purpose interface.
+
+```rust,editable
+// Define smaller, more specific traits
+trait Swimmer {
+    fn swim(&self);
+}
+
+trait Flyer {
+    fn fly(&self);
+}
+
+trait Walker {
+    fn walk(&self);
+}
+
+// Define the structs that will implement the traits
+struct Penguin;
+struct Duck;
+struct Eagle;
+
+// Implement the traits for each struct
+impl Swimmer for Penguin {
+    fn swim(&self) {
+        println!("Penguin swims.");
+    }
+}
+
+impl Swimmer for Duck {
+    fn swim(&self) {
+        println!("Duck swims.");
+    }
+}
+
+impl Flyer for Duck {
+    fn fly(&self) {
+        println!("Duck flies.");
+    }
+}
+
+impl Flyer for Eagle {
+    fn fly(&self) {
+        println!("Eagle flies.");
+    }
+}
+
+impl Walker for Eagle {
+    fn walk(&self) {
+        println!("Eagle walks.");
+    }
+}
+
+// Use the specific traits in functions that require them
+fn swim(swimmer: &impl Swimmer) {
+    swimmer.swim();
+}
+
+fn fly(flyer: &impl Flyer) {
+    flyer.fly();
+}
+
+fn walk(walker: &impl Walker) {
+    walker.walk();
+}
+
+// Main function
+fn main() {
+    let penguin = Penguin;
+    let duck = Duck;
+    let eagle = Eagle;
+
+    swim(&penguin);
+    swim(&duck);
+    fly(&duck);
+    fly(&eagle);
+    walk(&eagle);
+}
+```

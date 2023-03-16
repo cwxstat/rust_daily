@@ -200,6 +200,82 @@ fn main() {
 }
 
 </code></pre></pre>
+<h2 id="interface-segregation-principle"><a class="header" href="#interface-segregation-principle">Interface Segregation Principle</a></h2>
+<h3 id="many-client-specific-interfaces-are-better-than-one-general-purpose-interface"><a class="header" href="#many-client-specific-interfaces-are-better-than-one-general-purpose-interface">Many client-specific interfaces are better than one general-purpose interface.</a></h3>
+<pre><pre class="playground"><code class="language-rust editable">// Define smaller, more specific traits
+trait Swimmer {
+    fn swim(&amp;self);
+}
+
+trait Flyer {
+    fn fly(&amp;self);
+}
+
+trait Walker {
+    fn walk(&amp;self);
+}
+
+// Define the structs that will implement the traits
+struct Penguin;
+struct Duck;
+struct Eagle;
+
+// Implement the traits for each struct
+impl Swimmer for Penguin {
+    fn swim(&amp;self) {
+        println!(&quot;Penguin swims.&quot;);
+    }
+}
+
+impl Swimmer for Duck {
+    fn swim(&amp;self) {
+        println!(&quot;Duck swims.&quot;);
+    }
+}
+
+impl Flyer for Duck {
+    fn fly(&amp;self) {
+        println!(&quot;Duck flies.&quot;);
+    }
+}
+
+impl Flyer for Eagle {
+    fn fly(&amp;self) {
+        println!(&quot;Eagle flies.&quot;);
+    }
+}
+
+impl Walker for Eagle {
+    fn walk(&amp;self) {
+        println!(&quot;Eagle walks.&quot;);
+    }
+}
+
+// Use the specific traits in functions that require them
+fn swim(swimmer: &amp;impl Swimmer) {
+    swimmer.swim();
+}
+
+fn fly(flyer: &amp;impl Flyer) {
+    flyer.fly();
+}
+
+fn walk(walker: &amp;impl Walker) {
+    walker.walk();
+}
+
+// Main function
+fn main() {
+    let penguin = Penguin;
+    let duck = Duck;
+    let eagle = Eagle;
+
+    swim(&amp;penguin);
+    swim(&amp;duck);
+    fly(&amp;duck);
+    fly(&amp;eagle);
+    walk(&amp;eagle);
+}</code></pre></pre>
 
                     </main>
 
