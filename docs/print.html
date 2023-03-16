@@ -598,6 +598,113 @@ fn main() {
     fly(&amp;eagle);
     walk(&amp;eagle);
 }</code></pre></pre>
+<h1 id="openclosed-principle"><a class="header" href="#openclosed-principle">Open/Closed Principle</a></h1>
+<h2 id="software-entities-should-be-open-for-extension-but-closed-for-modification"><a class="header" href="#software-entities-should-be-open-for-extension-but-closed-for-modification">Software entities should be open for extension, but closed for modification.</a></h2>
+<pre><pre class="playground"><code class="language-rust editable">// Define a trait `Shape` with a method `area`
+pub trait Shape {
+    fn area(&amp;self) -&gt; f64;
+}
+
+// Implement the `Shape` trait for a `Rectangle` struct
+pub struct Rectangle {
+    width: f64,
+    height: f64,
+}
+
+impl Rectangle {
+    pub fn new(width: f64, height: f64) -&gt; Self {
+        Self { width, height }
+    }
+}
+
+impl Shape for Rectangle {
+    fn area(&amp;self) -&gt; f64 {
+        self.width * self.height
+    }
+}
+
+// Implement the `Shape` trait for a `Circle` struct
+pub struct Circle {
+    radius: f64,
+}
+
+impl Circle {
+    pub fn new(radius: f64) -&gt; Self {
+        Self { radius }
+    }
+}
+
+impl Shape for Circle {
+    fn area(&amp;self) -&gt; f64 {
+        std::f64::consts::PI * self.radius * self.radius
+    }
+}
+
+// A function that calculates the total area of a list of shapes
+pub fn total_area(shapes: &amp;[&amp;dyn Shape]) -&gt; f64 {
+    shapes.iter().map(|shape| shape.area()).sum()
+}
+
+fn main() {
+    let rectangle = Rectangle::new(5.0, 4.0);
+    let circle = Circle::new(3.0);
+
+    let shapes: Vec&lt;&amp;dyn Shape&gt; = vec![&amp;rectangle, &amp;circle];
+
+    println!(&quot;Total area: {}&quot;, total_area(&amp;shapes));
+}</code></pre></pre>
+<h1 id="liskov-substitution-principle"><a class="header" href="#liskov-substitution-principle">Liskov Substitution Principle</a></h1>
+<h2 id="subtypes-should-be-substitutable-for-their-base-types"><a class="header" href="#subtypes-should-be-substitutable-for-their-base-types">Subtypes should be substitutable for their base types.</a></h2>
+<pre><pre class="playground"><code class="language-rust editable">pub trait Bird {
+    fn fly(&amp;self);
+}
+
+pub struct Swallow {
+    pub name: String,
+}
+
+impl Swallow {
+    pub fn new(name: String) -&gt; Self {
+        Self { name }
+    }
+}
+
+impl Bird for Swallow {
+    fn fly(&amp;self) {
+        println!(&quot;{} the Swallow is flying.&quot;, self.name);
+    }
+}
+
+pub struct Penguin {
+    pub name: String,
+}
+
+impl Penguin {
+    pub fn new(name: String) -&gt; Self {
+        Self { name }
+    }
+}
+
+impl Bird for Penguin {
+    fn fly(&amp;self) {
+        println!(&quot;{} the Penguin cannot fly.&quot;, self.name);
+    }
+}
+
+pub fn let_birds_fly(birds: &amp;[&amp;dyn Bird]) {
+    for bird in birds {
+        bird.fly();
+    }
+}
+
+fn main() {
+    let swallow = Swallow::new(String::from(&quot;Jack&quot;));
+    let penguin = Penguin::new(String::from(&quot;Penny&quot;));
+
+    let birds: Vec&lt;&amp;dyn Bird&gt; = vec![&amp;swallow, &amp;penguin];
+
+    let_birds_fly(&amp;birds);
+}</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="bash-utils"><a class="header" href="#bash-utils">Bash Utils</a></h1>
 <pre><pre class="playground"><code class="language-rust editable">use std::env;
 use std::fs;

@@ -142,3 +142,120 @@ fn main() {
     walk(&eagle);
 }
 ```
+
+# Open/Closed Principle
+## Software entities should be open for extension, but closed for modification.
+
+```rust,editable
+// Define a trait `Shape` with a method `area`
+pub trait Shape {
+    fn area(&self) -> f64;
+}
+
+// Implement the `Shape` trait for a `Rectangle` struct
+pub struct Rectangle {
+    width: f64,
+    height: f64,
+}
+
+impl Rectangle {
+    pub fn new(width: f64, height: f64) -> Self {
+        Self { width, height }
+    }
+}
+
+impl Shape for Rectangle {
+    fn area(&self) -> f64 {
+        self.width * self.height
+    }
+}
+
+// Implement the `Shape` trait for a `Circle` struct
+pub struct Circle {
+    radius: f64,
+}
+
+impl Circle {
+    pub fn new(radius: f64) -> Self {
+        Self { radius }
+    }
+}
+
+impl Shape for Circle {
+    fn area(&self) -> f64 {
+        std::f64::consts::PI * self.radius * self.radius
+    }
+}
+
+// A function that calculates the total area of a list of shapes
+pub fn total_area(shapes: &[&dyn Shape]) -> f64 {
+    shapes.iter().map(|shape| shape.area()).sum()
+}
+
+fn main() {
+    let rectangle = Rectangle::new(5.0, 4.0);
+    let circle = Circle::new(3.0);
+
+    let shapes: Vec<&dyn Shape> = vec![&rectangle, &circle];
+
+    println!("Total area: {}", total_area(&shapes));
+}
+```
+
+# Liskov Substitution Principle
+## Subtypes should be substitutable for their base types.
+
+```rust,editable
+pub trait Bird {
+    fn fly(&self);
+}
+
+pub struct Swallow {
+    pub name: String,
+}
+
+impl Swallow {
+    pub fn new(name: String) -> Self {
+        Self { name }
+    }
+}
+
+impl Bird for Swallow {
+    fn fly(&self) {
+        println!("{} the Swallow is flying.", self.name);
+    }
+}
+
+pub struct Penguin {
+    pub name: String,
+}
+
+impl Penguin {
+    pub fn new(name: String) -> Self {
+        Self { name }
+    }
+}
+
+impl Bird for Penguin {
+    fn fly(&self) {
+        println!("{} the Penguin cannot fly.", self.name);
+    }
+}
+
+pub fn let_birds_fly(birds: &[&dyn Bird]) {
+    for bird in birds {
+        bird.fly();
+    }
+}
+
+fn main() {
+    let swallow = Swallow::new(String::from("Jack"));
+    let penguin = Penguin::new(String::from("Penny"));
+
+    let birds: Vec<&dyn Bird> = vec![&swallow, &penguin];
+
+    let_birds_fly(&birds);
+}
+```
+
+
