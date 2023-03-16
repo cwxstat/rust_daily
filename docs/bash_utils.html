@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Hashmap 1 - My Book of Rust</title>
+        <title>Bash Utils - My Book of Rust</title>
 
 
         <!-- Custom HTML head -->
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="bash_utils.html"><strong aria-hidden="true">4.</strong> Bash Utils</a></li><li class="chapter-item expanded "><a href="go_and_rust.html"><strong aria-hidden="true">5.</strong> Go and in Rust</a></li><li class="chapter-item expanded "><a href="raw_notes.html"><strong aria-hidden="true">6.</strong> Raw Notes</a></li><li class="chapter-item expanded "><a href="hashmap_1.html" class="active"><strong aria-hidden="true">7.</strong> Hashmap 1</a></li><li class="chapter-item expanded "><a href="functional.html"><strong aria-hidden="true">8.</strong> map,filter_map, collect</a></li><li class="chapter-item expanded "><a href="rust_aws_sdk_1.html"><strong aria-hidden="true">9.</strong> Rust AWS SDK 1</a></li><li class="chapter-item expanded "><a href="rust_repos.html"><strong aria-hidden="true">10.</strong> Repos to look at</a></li><li class="chapter-item expanded "><a href="videos_1.html"><strong aria-hidden="true">11.</strong> Videos</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="bash_utils.html" class="active"><strong aria-hidden="true">4.</strong> Bash Utils</a></li><li class="chapter-item expanded "><a href="go_and_rust.html"><strong aria-hidden="true">5.</strong> Go and in Rust</a></li><li class="chapter-item expanded "><a href="raw_notes.html"><strong aria-hidden="true">6.</strong> Raw Notes</a></li><li class="chapter-item expanded "><a href="hashmap_1.html"><strong aria-hidden="true">7.</strong> Hashmap 1</a></li><li class="chapter-item expanded "><a href="functional.html"><strong aria-hidden="true">8.</strong> map,filter_map, collect</a></li><li class="chapter-item expanded "><a href="rust_aws_sdk_1.html"><strong aria-hidden="true">9.</strong> Rust AWS SDK 1</a></li><li class="chapter-item expanded "><a href="rust_repos.html"><strong aria-hidden="true">10.</strong> Repos to look at</a></li><li class="chapter-item expanded "><a href="videos_1.html"><strong aria-hidden="true">11.</strong> Videos</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -142,31 +142,80 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="hashmap-1"><a class="header" href="#hashmap-1">Hashmap 1</a></h1>
-<pre><pre class="playground"><code class="language-rust editable">
-use std::collections::HashMap;
-
-fn create_hashmap() -&gt; Box&lt;HashMap&lt;i32, String&gt;&gt; {
-    let mut map = HashMap::new();
-    map.insert(1, &quot;hello&quot;.to_string());
-    map.insert(2, &quot;world&quot;.to_string());
-
-    Box::new(map)
-}
-
-fn add_to_boxed_hashmap(box_map: &amp;mut Box&lt;HashMap&lt;i32, String&gt;&gt;, key: i32, value: String) {
-    for i in 0..10 {
-        box_map.insert(i, format!(&quot;hello {}&quot;, i));
-    }
-    box_map.insert(key, value);
-}
+                        <h1 id="bash-utils"><a class="header" href="#bash-utils">Bash Utils</a></h1>
+<pre><pre class="playground"><code class="language-rust editable">use std::env;
+use std::fs;
+use std::path::PathBuf;
 
 fn main() {
-    let mut box_map = create_hashmap();
-    add_to_boxed_hashmap(&amp;mut box_map, 0, &quot;foo&quot;.to_string());
-    println!(&quot;{:?}&quot;, box_map);
-}
+    let home_dir = env::var(&quot;HOME&quot;).expect(&quot;Failed to get user's home directory&quot;);
+    let downloads_dir = format!(&quot;{}/Downloads&quot;, home_dir);
+    let pdf_dir = format!(&quot;{}/pdf&quot;, downloads_dir);
 
+    // Create the directory if it doesn't exist
+    if let Err(_) = fs::create_dir_all(&amp;pdf_dir) {
+        eprintln!(&quot;Failed to create directory: {}&quot;, pdf_dir);
+        return;
+    }
+
+    let entries = match fs::read_dir(&amp;downloads_dir) {
+        Ok(entries) =&gt; entries,
+        Err(e) =&gt; {
+            eprintln!(&quot;Failed to read directory: {}\nError: {}&quot;, downloads_dir, e);
+            return;
+        }
+    };
+
+    let mut file_count = 0;
+    let mut total_bytes_moved = 0;
+
+    for entry in entries {
+        if let Ok(entry) = entry {
+            let metadata = match entry.metadata() {
+                Ok(metadata) =&gt; metadata,
+                Err(e) =&gt; {
+                    eprintln!(&quot;Failed to get metadata: {}&quot;, e);
+                    continue;
+                }
+            };
+
+            if metadata.is_file() {
+                let file_name = entry.file_name();
+                let file_name_str = file_name.to_string_lossy();
+
+                if file_name_str.contains(&quot;pdf&quot;) {
+                    let source_path = entry.path();
+                    let destination_path = PathBuf::from(&amp;pdf_dir).join(file_name.clone());
+
+                    match entry.metadata() {
+                        Ok(metadata) =&gt; {
+                            let file_size = metadata.len();
+
+                            if let Err(e) = fs::rename(&amp;source_path, &amp;destination_path) {
+                                eprintln!(&quot;Failed to move file: {}\nError: {}&quot;, file_name_str, e);
+                            } else {
+                                println!(&quot;Moved file: {}&quot;, file_name_str);
+                                file_count += 1;
+                                total_bytes_moved += file_size;
+                            }
+                        }
+                        Err(e) =&gt; {
+                            eprintln!(
+                                &quot;Failed to get metadata for file: {}\nError: {}&quot;,
+                                file_name_str, e
+                            );
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    println!(
+        &quot;Moved {} file(s), total bytes: {}&quot;,
+        file_count, total_bytes_moved
+    );
+}
 
 </code></pre></pre>
 
@@ -174,11 +223,11 @@ fn main() {
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="raw_notes.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="chapter_3.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="functional.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="go_and_rust.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -188,11 +237,11 @@ fn main() {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="raw_notes.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="chapter_3.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="functional.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="go_and_rust.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
