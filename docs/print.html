@@ -522,6 +522,123 @@ fn main() {
 }
 
 </code></pre></pre>
+<h2 id="dip-another-example"><a class="header" href="#dip-another-example">DIP Another example</a></h2>
+<pre><pre class="playground"><code class="language-rust editable">pub trait Bird {
+    fn bird_call(&amp;self);
+}
+
+pub struct Chicken {
+    pub sound: String,
+}
+
+impl Bird for Chicken {
+    fn bird_call(&amp;self) {
+        println!(&quot;{}&quot;, self.sound);
+    }
+}
+
+pub struct Duck {
+    pub sound: String,
+}
+
+impl Bird for Duck {
+    fn bird_call(&amp;self) {
+        println!(&quot;{}&quot;, self.sound);
+    }
+}
+
+pub struct BirdCage&lt;T: Bird&gt; {
+    pub bird: T,
+}
+
+impl&lt;T: Bird&gt; BirdCage&lt;T&gt; {
+    pub fn new(bird: T) -&gt; Self {
+        Self { bird }
+    }
+
+    pub fn make_sound(&amp;self) {
+        self.bird.bird_call();
+    }
+}
+
+fn main() {
+    let chicken = Chicken {
+        sound: String::from(&quot;Cluck!&quot;),
+    };
+    let duck = Duck {
+        sound: String::from(&quot;Quack!&quot;),
+    };
+
+    let chicken_cage = BirdCage::new(chicken);
+    let duck_cage = BirdCage::new(duck);
+
+    chicken_cage.make_sound();
+    duck_cage.make_sound();
+}</code></pre></pre>
+<h2 id="dip-bank-example"><a class="header" href="#dip-bank-example">DIP bank example</a></h2>
+<pre><pre class="playground"><code class="language-rust editable">pub trait Transaction {
+    fn execute(&amp;self);
+}
+
+pub struct Deposit {
+    pub amount: f64,
+}
+
+impl Transaction for Deposit {
+    fn execute(&amp;self) {
+        println!(&quot;Deposit: ${}&quot;, self.amount);
+    }
+}
+
+pub struct Withdraw {
+    pub amount: f64,
+}
+
+impl Transaction for Withdraw {
+    fn execute(&amp;self) {
+        println!(&quot;Withdraw: ${}&quot;, self.amount);
+    }
+}
+
+pub struct Bank {
+    pub transactions: Vec&lt;Box&lt;dyn Transaction&gt;&gt;,
+}
+
+impl Bank {
+    pub fn new() -&gt; Self {
+        Self { transactions: Vec::new() }
+    }
+
+    pub fn add_transaction&lt;T: Transaction + 'static&gt;(&amp;mut self, transaction: T) {
+        self.transactions.push(Box::new(transaction));
+    }
+
+    pub fn process_transactions(&amp;self) {
+        for transaction in &amp;self.transactions {
+            transaction.execute();
+        }
+    }
+}
+
+fn main() {
+    let deposit = Deposit { amount: 1000.0 };
+    let withdraw = Withdraw { amount: 500.0 };
+
+    let mut bank = Bank::new();
+    bank.add_transaction(deposit);
+    bank.add_transaction(withdraw);
+
+    bank.process_transactions();
+}</code></pre></pre>
+<blockquote>
+In this example, we have a Transaction trait that represents the abstraction, and two structs, Deposit and Withdraw, that implement the Transaction trait. The Bank struct is a high-level module that depends on the Transaction trait, an abstraction, rather than depending on the concrete implementations (Deposit and Withdraw).
+</blockquote>
+<blockquote>
+The Bank struct maintains a vector of Box<dyn Transaction> to store transactions. This allows it to work with any kind of transaction without having to know the specifics of each type of transaction. The main function demonstrates the usage of the Bank struct with both a Deposit and a Withdraw instance.
+</blockquote>
+<blockquote>
+The above example follows the Dependency Inversion Principle, as both high-level and low-level modules depend on an abstraction, and the abstraction does not depend on any implementation details.
+</blockquote>
 <h2 id="interface-segregation-principle"><a class="header" href="#interface-segregation-principle">Interface Segregation Principle</a></h2>
 <h3 id="many-client-specific-interfaces-are-better-than-one-general-purpose-interface"><a class="header" href="#many-client-specific-interfaces-are-better-than-one-general-purpose-interface">Many client-specific interfaces are better than one general-purpose interface.</a></h3>
 <pre><pre class="playground"><code class="language-rust editable">// Define smaller, more specific traits

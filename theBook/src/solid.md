@@ -61,6 +61,132 @@ fn main() {
 
 
 ```
+## DIP Another example
+
+```rust,editable
+pub trait Bird {
+    fn bird_call(&self);
+}
+
+pub struct Chicken {
+    pub sound: String,
+}
+
+impl Bird for Chicken {
+    fn bird_call(&self) {
+        println!("{}", self.sound);
+    }
+}
+
+pub struct Duck {
+    pub sound: String,
+}
+
+impl Bird for Duck {
+    fn bird_call(&self) {
+        println!("{}", self.sound);
+    }
+}
+
+pub struct BirdCage<T: Bird> {
+    pub bird: T,
+}
+
+impl<T: Bird> BirdCage<T> {
+    pub fn new(bird: T) -> Self {
+        Self { bird }
+    }
+
+    pub fn make_sound(&self) {
+        self.bird.bird_call();
+    }
+}
+
+fn main() {
+    let chicken = Chicken {
+        sound: String::from("Cluck!"),
+    };
+    let duck = Duck {
+        sound: String::from("Quack!"),
+    };
+
+    let chicken_cage = BirdCage::new(chicken);
+    let duck_cage = BirdCage::new(duck);
+
+    chicken_cage.make_sound();
+    duck_cage.make_sound();
+}
+```
+## DIP bank example
+
+```rust,editable
+pub trait Transaction {
+    fn execute(&self);
+}
+
+pub struct Deposit {
+    pub amount: f64,
+}
+
+impl Transaction for Deposit {
+    fn execute(&self) {
+        println!("Deposit: ${}", self.amount);
+    }
+}
+
+pub struct Withdraw {
+    pub amount: f64,
+}
+
+impl Transaction for Withdraw {
+    fn execute(&self) {
+        println!("Withdraw: ${}", self.amount);
+    }
+}
+
+pub struct Bank {
+    pub transactions: Vec<Box<dyn Transaction>>,
+}
+
+impl Bank {
+    pub fn new() -> Self {
+        Self { transactions: Vec::new() }
+    }
+
+    pub fn add_transaction<T: Transaction + 'static>(&mut self, transaction: T) {
+        self.transactions.push(Box::new(transaction));
+    }
+
+    pub fn process_transactions(&self) {
+        for transaction in &self.transactions {
+            transaction.execute();
+        }
+    }
+}
+
+fn main() {
+    let deposit = Deposit { amount: 1000.0 };
+    let withdraw = Withdraw { amount: 500.0 };
+
+    let mut bank = Bank::new();
+    bank.add_transaction(deposit);
+    bank.add_transaction(withdraw);
+
+    bank.process_transactions();
+}
+```
+<blockquote>
+In this example, we have a Transaction trait that represents the abstraction, and two structs, Deposit and Withdraw, that implement the Transaction trait. The Bank struct is a high-level module that depends on the Transaction trait, an abstraction, rather than depending on the concrete implementations (Deposit and Withdraw).
+</blockquote>
+
+<blockquote>
+The Bank struct maintains a vector of Box<dyn Transaction> to store transactions. This allows it to work with any kind of transaction without having to know the specifics of each type of transaction. The main function demonstrates the usage of the Bank struct with both a Deposit and a Withdraw instance.
+</blockquote>
+
+<blockquote>
+The above example follows the Dependency Inversion Principle, as both high-level and low-level modules depend on an abstraction, and the abstraction does not depend on any implementation details.
+</blockquote>
+
 
 ## Interface Segregation Principle
 
