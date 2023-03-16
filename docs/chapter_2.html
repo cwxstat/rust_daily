@@ -144,6 +144,40 @@
                     <main>
                         <h1 id="chapter-2"><a class="header" href="#chapter-2">Chapter 2</a></h1>
 <p>This is an example of chapter 2.</p>
+<pre><pre class="playground"><code class="language-rust editable">enum Message {
+    Quit,
+    ChangeColor(u8, u8, u8),
+    Move { x: i32, y: i32 },
+    Write(String),
+}
+
+fn process_message(msg: Message) {
+    // Using match expression
+    match msg {
+        Message::Quit =&gt; println!(&quot;Quit&quot;),
+        Message::ChangeColor(r, g, b) =&gt; println!(&quot;Change color to ({}, {}, {})&quot;, r, g, b),
+        Message::Move { x, y } =&gt; println!(&quot;Move to coordinates ({}, {})&quot;, x, y),
+        Message::Write(text) =&gt; println!(&quot;Write: {}&quot;, text),
+    }
+}
+
+fn main() {
+    let msg1 = Message::ChangeColor(255, 0, 0);
+    let msg2 = Message::Write(String::from(&quot;Hello, World!&quot;));
+    let _msg3 = Message::Quit;
+    let _msg4 = Message::Move { x: 10, y: 20 };
+
+    // Using if let statement
+    if let Message::ChangeColor(r, g, b) = msg1 {
+        println!(&quot;Change color to ({}, {}, {})&quot;, r, g, b);
+    } else {
+        println!(&quot;Not a ChangeColor message&quot;);
+    }
+
+    process_message(msg1);
+    process_message(msg2);
+}
+</code></pre></pre>
 
                     </main>
 
