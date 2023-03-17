@@ -8,3 +8,7 @@ edition = "2021"
 [dependencies]
 hyper = { version = "0.14", features = ["full"] }
 tokio = { version = "1", features = ["full"] }
+
+[dev-dependencies]
+mockall = "0.10"
+tokio-test = "0.4"

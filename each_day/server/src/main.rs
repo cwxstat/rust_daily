@@ -1,6 +1,6 @@
-use hyper::{Body, Request, Response, Server};
 use hyper::service::{make_service_fn, service_fn};
 use hyper::StatusCode;
+use hyper::{Body, Request, Response, Server};
 use std::convert::Infallible;
 use std::net::SocketAddr;
 
@@ -23,7 +23,10 @@ impl Spitter for RealSpitter {
     }
 }
 
-async fn handle_request(spitter: impl Spitter, req: Request<Body>) -> Result<Response<Body>, Infallible> {
+async fn handle_request(
+    spitter: impl Spitter,
+    req: Request<Body>,
+) -> Result<Response<Body>, Infallible> {
     let (parts, _body) = req.into_parts();
     let message = match parts.uri.path() {
         "/split222" => spitter.spit2(),
