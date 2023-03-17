@@ -255,7 +255,7 @@ fn main() {
 }</code></pre></pre>
 <h2 id="dip-bank-example"><a class="header" href="#dip-bank-example">DIP bank example</a></h2>
 <pre><pre class="playground"><code class="language-rust editable">pub trait Transaction {
-    fn execute(&amp;self);
+    fn execute(&amp;self, balance: &amp;mut f64);
 }
 
 pub struct Deposit {
@@ -263,7 +263,8 @@ pub struct Deposit {
 }
 
 impl Transaction for Deposit {
-    fn execute(&amp;self) {
+    fn execute(&amp;self, balance: &amp;mut f64) {
+        *balance += self.amount;
         println!(&quot;Deposit: ${}&quot;, self.amount);
     }
 }
@@ -273,27 +274,36 @@ pub struct Withdraw {
 }
 
 impl Transaction for Withdraw {
-    fn execute(&amp;self) {
-        println!(&quot;Withdraw: ${}&quot;, self.amount);
+    fn execute(&amp;self, balance: &amp;mut f64) {
+        if *balance &gt;= self.amount {
+            *balance -= self.amount;
+            println!(&quot;Withdraw: ${}&quot;, self.amount);
+        } else {
+            println!(&quot;Withdrawal failed: Insufficient funds&quot;);
+        }
     }
 }
 
 pub struct Bank {
     pub transactions: Vec&lt;Box&lt;dyn Transaction&gt;&gt;,
+    pub balance: f64,
 }
 
 impl Bank {
     pub fn new() -&gt; Self {
-        Self { transactions: Vec::new() }
+        Self {
+            transactions: Vec::new(),
+            balance: 0.0,
+        }
     }
 
     pub fn add_transaction&lt;T: Transaction + 'static&gt;(&amp;mut self, transaction: T) {
         self.transactions.push(Box::new(transaction));
     }
 
-    pub fn process_transactions(&amp;self) {
+    pub fn process_transactions(&amp;mut self) {
         for transaction in &amp;self.transactions {
-            transaction.execute();
+            transaction.execute(&amp;mut self.balance);
         }
     }
 }
@@ -301,13 +311,16 @@ impl Bank {
 fn main() {
     let deposit = Deposit { amount: 1000.0 };
     let withdraw = Withdraw { amount: 500.0 };
+    let invalid_withdraw = Withdraw { amount: 2000.0 };
 
     let mut bank = Bank::new();
     bank.add_transaction(deposit);
     bank.add_transaction(withdraw);
+    bank.add_transaction(invalid_withdraw);
 
     bank.process_transactions();
-}</code></pre></pre>
+}
+</code></pre></pre>
 <blockquote>
 In this example, we have a Transaction trait that represents the abstraction, and two structs, Deposit and Withdraw, that implement the Transaction trait. The Bank struct is a high-level module that depends on the Transaction trait, an abstraction, rather than depending on the concrete implementations (Deposit and Withdraw).
 </blockquote>

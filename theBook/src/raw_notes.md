@@ -39,6 +39,41 @@ func main() {
 ```
 
 
+# From and Into
+
+```rust,editable
+#[derive(Debug)]
+struct Meter(u32);
+
+#[derive(Debug)]
+struct Feet(u32);
+
+// Implementing the From trait for converting Feet into Meter
+impl From<Feet> for Meter {
+    fn from(feet: Feet) -> Self {
+        Meter((feet.0 as f32 * 0.3048) as u32)
+    }
+}
+
+// Implementing the Into trait for converting Meter into Feet
+impl Into<Feet> for Meter {
+    fn into(self) -> Feet {
+        Feet((self.0 as f32 * 3.28084) as u32)
+    }
+}
+
+fn main() {
+    // Using the From trait
+    let feet = Feet(100);
+    let meter: Meter = Meter::from(feet);
+    println!("100 feet is equal to {:?} meters", meter);
+
+    // Using the Into trait
+    let meter = Meter(30);
+    let feet: Feet = meter.into();
+    println!("30 meters is equal to {:?} feet", feet);
+}
+```
 
 
 

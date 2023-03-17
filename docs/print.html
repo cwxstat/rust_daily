@@ -577,7 +577,7 @@ fn main() {
 }</code></pre></pre>
 <h2 id="dip-bank-example"><a class="header" href="#dip-bank-example">DIP bank example</a></h2>
 <pre><pre class="playground"><code class="language-rust editable">pub trait Transaction {
-    fn execute(&amp;self);
+    fn execute(&amp;self, balance: &amp;mut f64);
 }
 
 pub struct Deposit {
@@ -585,7 +585,8 @@ pub struct Deposit {
 }
 
 impl Transaction for Deposit {
-    fn execute(&amp;self) {
+    fn execute(&amp;self, balance: &amp;mut f64) {
+        *balance += self.amount;
         println!(&quot;Deposit: ${}&quot;, self.amount);
     }
 }
@@ -595,27 +596,36 @@ pub struct Withdraw {
 }
 
 impl Transaction for Withdraw {
-    fn execute(&amp;self) {
-        println!(&quot;Withdraw: ${}&quot;, self.amount);
+    fn execute(&amp;self, balance: &amp;mut f64) {
+        if *balance &gt;= self.amount {
+            *balance -= self.amount;
+            println!(&quot;Withdraw: ${}&quot;, self.amount);
+        } else {
+            println!(&quot;Withdrawal failed: Insufficient funds&quot;);
+        }
     }
 }
 
 pub struct Bank {
     pub transactions: Vec&lt;Box&lt;dyn Transaction&gt;&gt;,
+    pub balance: f64,
 }
 
 impl Bank {
     pub fn new() -&gt; Self {
-        Self { transactions: Vec::new() }
+        Self {
+            transactions: Vec::new(),
+            balance: 0.0,
+        }
     }
 
     pub fn add_transaction&lt;T: Transaction + 'static&gt;(&amp;mut self, transaction: T) {
         self.transactions.push(Box::new(transaction));
     }
 
-    pub fn process_transactions(&amp;self) {
+    pub fn process_transactions(&amp;mut self) {
         for transaction in &amp;self.transactions {
-            transaction.execute();
+            transaction.execute(&amp;mut self.balance);
         }
     }
 }
@@ -623,13 +633,16 @@ impl Bank {
 fn main() {
     let deposit = Deposit { amount: 1000.0 };
     let withdraw = Withdraw { amount: 500.0 };
+    let invalid_withdraw = Withdraw { amount: 2000.0 };
 
     let mut bank = Bank::new();
     bank.add_transaction(deposit);
     bank.add_transaction(withdraw);
+    bank.add_transaction(invalid_withdraw);
 
     bank.process_transactions();
-}</code></pre></pre>
+}
+</code></pre></pre>
 <blockquote>
 In this example, we have a Transaction trait that represents the abstraction, and two structs, Deposit and Withdraw, that implement the Transaction trait. The Bank struct is a high-level module that depends on the Transaction trait, an abstraction, rather than depending on the concrete implementations (Deposit and Withdraw).
 </blockquote>
@@ -1103,6 +1116,38 @@ func main() {
     fmt.Println(&quot;Hello, playground&quot;)
 }
 </code></pre>
+<h1 id="from-and-into"><a class="header" href="#from-and-into">From and Into</a></h1>
+<pre><pre class="playground"><code class="language-rust editable">#[derive(Debug)]
+struct Meter(u32);
+
+#[derive(Debug)]
+struct Feet(u32);
+
+// Implementing the From trait for converting Feet into Meter
+impl From&lt;Feet&gt; for Meter {
+    fn from(feet: Feet) -&gt; Self {
+        Meter((feet.0 as f32 * 0.3048) as u32)
+    }
+}
+
+// Implementing the Into trait for converting Meter into Feet
+impl Into&lt;Feet&gt; for Meter {
+    fn into(self) -&gt; Feet {
+        Feet((self.0 as f32 * 3.28084) as u32)
+    }
+}
+
+fn main() {
+    // Using the From trait
+    let feet = Feet(100);
+    let meter: Meter = Meter::from(feet);
+    println!(&quot;100 feet is equal to {:?} meters&quot;, meter);
+
+    // Using the Into trait
+    let meter = Meter(30);
+    let feet: Feet = meter.into();
+    println!(&quot;30 meters is equal to {:?} feet&quot;, feet);
+}</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="hashmap-1"><a class="header" href="#hashmap-1">Hashmap 1</a></h1>
 <pre><pre class="playground"><code class="language-rust editable">
 use std::collections::HashMap;
