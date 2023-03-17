@@ -4,6 +4,7 @@ use hyper::StatusCode;
 use std::convert::Infallible;
 use std::net::SocketAddr;
 
+#[cfg_attr(test, mockall::automock)]
 pub trait Spitter {
     fn spit(&self) -> String;
     fn spit2(&self) -> String;
