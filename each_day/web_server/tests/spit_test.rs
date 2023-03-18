@@ -1,37 +1,46 @@
-use hyper::{Body, Request, Response, Server};
-use mockall::{automock, predicate::*};
-use web_server::handle_request;
-use web_server::RealSpitter;
-use web_server::Spitter;
+// tests/web_server_tests.rs
+use hyper::{Body, Request, StatusCode};
+use tokio::runtime::Runtime;
+use web_server::{handle_request, Spitter, MockSpitter};
 
-#[automock]
-trait MockSpitter: Spitter {}
+use mockall::predicate::*;
+use mockall::Sequence;
 
-#[tokio::test]
-async fn test_handle_request_with_mocked_spitter() {
-    let mut mock_spitter = MockSpitter::new();
-    mock_spitter
+
+#[test]
+fn test_handle_request() {
+    let mut runtime = Runtime::new().unwrap();
+
+    let mut spitter_mock = web_server::MockSpitter::new();
+    let mut seq = Sequence::new();
+    spitter_mock
         .expect_spit()
         .times(1)
-        .return_const("Mocked spit response".to_string());
-    mock_spitter
+        .in_sequence(&mut seq)
+        .return_const("Test spit response".to_string());
+    spitter_mock
         .expect_spit2()
         .times(1)
-        .return_const("Mocked spit2 response".to_string());
+        .in_sequence(&mut seq)
+        .return_const("Test spit2 response".to_string());
 
-    let request1 = Request::get("http://127.0.0.1:8080/some_path")
-        .body(Body::empty())
-        .unwrap();
+    let test_cases = vec![
+        ("/", "Test spit response"),
+        ("/split222", "Test spit2 response"),
+    ];
 
-    let response1 = handle_request(mock_spitter.clone(), request1)
-        .await
-        .unwrap();
-    assert_eq!(response1.into_body(), Body::from("Mocked spit response"));
+    for (path, expected_response) in test_cases {
+        let request = Request::get(format!("http://localhost:3000{}", path))
+            .body(Body::empty())
+            .unwrap();
 
-    let request2 = Request::get("http://127.0.0.1:8080/split222")
-        .body(Body::empty())
-        .unwrap();
+        let response = runtime.block_on(handle_request(spitter_mock.clone(), request)).unwrap();
 
-    let response2 = handle_request(mock_spitter, request2).await.unwrap();
-    assert_eq!(response2.into_body(), Body::from("Mocked spit2 response"));
+        assert_eq!(response.status(), StatusCode::OK);
+
+        let body_bytes = runtime.block_on(hyper::body::to_bytes(response.into_body())).unwrap();
+        let body_str = String::from_utf8(body_bytes.to_vec()).unwrap();
+
+        assert_eq!(body_str, expected_response);
+    }
 }
