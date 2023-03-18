@@ -1,3 +1,4 @@
+[![Codefresh build status]( https://g.codefresh.io/api/badges/pipeline/cwxstat-cicd/cwxstat%2Frust_daily?type=cf-2&key=eyJhbGciOiJIUzI1NiJ9.NjM0YWVkMzM0NzI2YzFhMzBlNWVkOTVh.ZfjYCotys9Ry041iPk25bHpvIClqKVV0FlncXV1wtRk)]( https://g.codefresh.io/pipelines/edit/new/builds?id=64161c911f382c7145e49944&pipeline=rust_daily&projects=cwxstat&projectId=6409de421f25e6a0d478783b)
 # rust_daily
 
 
